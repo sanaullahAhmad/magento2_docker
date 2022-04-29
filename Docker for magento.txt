@@ -1,0 +1,82 @@
+## Starting Docker
+sudo docker-compose up -d
+
+## Shutting down Docker
+sudo docker-compose down -v
+
+## Connecting via SSH
+sudo docker exec -it --user www-data webserver /bin/bash
+
+## Flush Redis
+Docker exec -it redis redis-cli FLUSHALL
+
+
+
+
+
+php bin/magento setup:upgrade &&
+php bin/magento setup:di:compile &&
+php bin/magento setup:static-content:deploy -f &&
+php bin/magento c:f
+
+
+sudo lsof -i :3306
+sudo kill -9 1317
+
+only recreate fresh mysql
+docker-compose up --force-recreate --no-deps mysql
+
+
+Remove all unused containers, volumes, networks and images
+docker system prune -a --volumes
+
+in tile500/data/mysql
+sudo chmod 777 ibdata1
+
+
+stop all containers:
+docker kill $(docker ps -q)
+
+
+Navigate to home\tm\tile500\mysql\data
+Delete all ib_logfile's
+Delete the ibdata1 file
+Restart docker
+
+
+sudo update-alternatives --config php
+## and this is what you will get
+## There are 4 choices for the alternative php (providing /usr/bin/php).
+
+/etc/php/7.4/cli php.ini
+
+##install magento 2.4 with command line in this docker envirnment
+
+php bin/magento setup:install --base-url='http://magento242local/' \
+--db-host='mysql' --db-name='magento242local' --db-user='root' --db-password='tiger' \
+--admin-firstname='Magento' --admin-lastname='User' --admin-email='sanaullahAhmad@gmail.com' \
+--admin-user='admin' --admin-password='admin123' --language='en_US' \
+--currency='USD' --timezone='America/Chicago' --use-rewrites=1 \
+--search-engine='elasticsearch7' --elasticsearch-host='es1:9200' \
+--elasticsearch-port='9200' 
+
+
+
+Public Key: aa9d2b1b0c92c5b6d2f87e6a3d910deb
+Private Key: 434a67bdb659fbbc7479f3c9ba1ce947
+
+sudo docker exec -i mysql mysql -u root  -p'tiger' -h mysql -D Tile500New < tile500.co.pk/Tile500New_bk.sql
+
+## take backup of database inside docker mysql
+sudo docker exec -i mysql mysqldump -u root -p  tile500 | gzip > tile_500_backup.sql.gz
+
+## import backup of magento database back to phpmyadmin mysql
+gunzip < tile_500_backup.sql.gz  | sudo docker exec -i mysql mysql -u root -p'tiger' -h mysql -D tile500
+
+
+composer show elasticsearch/elasticsearch 
+ composer depends elasticsearch/elasticsearch
+ composer require elasticsearch:5
+
+## change permission command
+ sudo chmod -R 755 /opt/lampp/htdocs
